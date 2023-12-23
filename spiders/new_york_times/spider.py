@@ -23,21 +23,22 @@ def check_and_close_tracker(browser: Selenium):
 
 
 def extract_news(browser: Selenium, date_to: datetime, date_since: datetime):
-    valid_news_elements = []
+    valid_news = []
     last_element_date = datetime.now().date()
 
     while last_element_date >= date_since:
         check_and_close_tracker(browser)
         wait_for_element_and_click(browser, XPATHS["search_page_more_button"])
-        news_list_elements = wait_for_element_and_retrieve(
-            browser, XPATHS["search_page_results"], multiple=True
+
+        news_dates = wait_for_element_and_retrieve(
+            browser, XPATHS["news_date"], multiple=True
         )
-
-        for element in news_list_elements:
-            element_date = parse_date(element.find_element("xpath", ".//span").text)
-
-            if element_date >= date_since and element_date <= date_to:
-                valid_news_elements.append(element)
+        news_titles = wait_for_element_and_retrieve(
+            browser, XPATHS["news_title"], multiple=True
+        )
+        news_descriptions = wait_for_element_and_retrieve(
+            browser, XPATHS["news_description"], multiple=True
+        )
 
         last_element_date = element_date
 

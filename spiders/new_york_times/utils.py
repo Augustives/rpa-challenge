@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from dataclasses import dataclass
 
 
 def get_date_range(months_ago: int) -> tuple[datetime, datetime]:
@@ -19,7 +20,7 @@ def get_date_range(months_ago: int) -> tuple[datetime, datetime]:
 
 def parse_date(date_str):
     try:
-        return datetime.strptime(date_str, "%b. %d, %Y")
+        return datetime.strptime(date_str, "%b. %d, %Y").date()
     except ValueError:
         current_year = datetime.now().year
-        return datetime.strptime(f"{date_str}, {current_year}", "%b. %d, %Y")
+        return datetime.strptime(f"{date_str}, {current_year}", "%b. %d, %Y").date()

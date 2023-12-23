@@ -14,7 +14,7 @@ XPATHS = {
     "search_page_results": 'xpath://ol[@data-testid="search-results"]/li/div',
     "search_page_more_button": 'xpath://button[@data-testid="search-show-more-button"]',
     "news_date": 'xpath://ol[@data-testid="search-results"]/li/div/span[@data-testid="todays-date"]',
-    "news_title": 'xpath://ol[@data-testid="search-results"]/li/div/div/a/h4',
-    "news_description": 'xpath://ol[@data-testid="search-results"]/li/div/div/a/p',
+    "news_title": 'xpath://ol[@data-testid="search-results"]/li/div/div/div/a/h4',
+    "news_description": 'xpath://ol[@data-testid="search-results"]/li/div/div/div/a/p',
     "tracker_button": 'xpath://button[@data-testid="expanded-dock-btn-selector"]',
 }

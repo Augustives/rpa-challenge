@@ -40,7 +40,7 @@ def extract_news(browser: Selenium, date_to: datetime, date_since: datetime):
             browser, XPATHS["news_description"], multiple=True
         )
 
-        last_element_date = element_date
+        last_element_date = parse_date(news_dates[-1].text)
 
 
 def set_date_range(browser: Selenium, date_to: datetime, date_since: datetime):

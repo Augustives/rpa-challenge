@@ -17,4 +17,4 @@ class NewYorkTimesSpider(BaseSeleniumSpider):
         with SeleniumBrowser() as browser:
             self.setup_browser(browser)
             data = self._extractor.extract(browser)
-            return self._parser.parse(data)
+            self._parser.parse(data)

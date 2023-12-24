@@ -12,12 +12,20 @@ class SeleniumBrowser:
         self._browser: Selenium = None
         self._browser_settings: dict = {
             "browser": "headlesschrome",
+            "desired_capabilities": {
+                "args": [
+                    "--no-sandbox",
+                    "--disable-gpu",
+                    "--disable-dev-shm-usage",
+                    "--disable-extensions",
+                    "--remote-debugging-port=9222",
+                ]
+            },
         } | browser_settings
 
     def __enter__(self):
         self._browser = Selenium(**self._selenium_settings)
         self._browser.open_browser(**self._browser_settings)
-
         return self._browser
 
     def __exit__(self, exc_type, exc_val, exc_tb):

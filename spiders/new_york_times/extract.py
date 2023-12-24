@@ -6,7 +6,7 @@ from RPA.HTTP import HTTP
 from selenium.webdriver.support.ui import WebDriverWait
 
 from spiders.new_york_times.data import News
-from spiders.new_york_times.constants import BASE_URL, XPATHS
+from spiders.new_york_times.constants import BASE_URL, XPATH_SELECTORS, CLASS_SELECTORS
 from spiders.new_york_times.utils import (
     check_and_close_tracker,
     get_date_range,
@@ -32,13 +32,15 @@ class NewYorkTimesExtractor(BaseSeleniumExtractor):
 
     def expand_news_and_wait(self, browser: Selenium):
         current_news_count = len(
-            wait_for_element_and_retrieve(browser, XPATHS["news_date"], multiple=True)
+            wait_for_element_and_retrieve(
+                browser, CLASS_SELECTORS["news_date"], multiple=True
+            )
         )
-        wait_for_element_and_click(browser, XPATHS["search_page_more_button"])
+        wait_for_element_and_click(browser, XPATH_SELECTORS["search_page_more_button"])
         WebDriverWait(browser, 10).until(
             lambda _: len(
                 wait_for_element_and_retrieve(
-                    browser, XPATHS["news_date"], multiple=True
+                    browser, CLASS_SELECTORS["news_date"], multiple=True
                 )
             )
             > current_news_count
@@ -57,25 +59,25 @@ class NewYorkTimesExtractor(BaseSeleniumExtractor):
             news_titles = [
                 element.text
                 for element in wait_for_element_and_retrieve(
-                    browser, XPATHS["news_title"], multiple=True
+                    browser, CLASS_SELECTORS["news_title"], multiple=True
                 )
             ]
             news_descriptions = [
                 element.text if element.text else ""
                 for element in wait_for_element_and_retrieve(
-                    browser, XPATHS["news_description"], multiple=True
+                    browser, CLASS_SELECTORS["news_description"], multiple=True
                 )
             ]
             news_dates = [
                 parse_date(element.text)
                 for element in wait_for_element_and_retrieve(
-                    browser, XPATHS["news_date"], multiple=True
+                    browser, CLASS_SELECTORS["news_date"], multiple=True
                 )
             ]
             news_images_src = [
                 element.get_property("src")
                 for element in wait_for_element_and_retrieve(
-                    browser, XPATHS["news_image"], multiple=True
+                    browser, XPATH_SELECTORS["news_image"], multiple=True
                 )
             ]
 
@@ -110,25 +112,26 @@ class NewYorkTimesExtractor(BaseSeleniumExtractor):
     def set_date_range(
         self, browser: Selenium, date_to: datetime, date_since: datetime
     ):
-        wait_for_element_and_click(browser, XPATHS["date_range_dropdown"])
-        wait_for_element_and_click(browser, XPATHS["date_range_button"])
+        wait_for_element_and_click(browser, XPATH_SELECTORS["date_range_dropdown"])
+        wait_for_element_and_click(browser, XPATH_SELECTORS["date_range_button"])
 
         browser.input_text("id:startDate", date_since.strftime("%m/%d/%Y"))
         browser.input_text("id:endDate", date_to.strftime("%m/%d/%Y"))
 
-        wait_for_element_and_click(browser, XPATHS["date_range_dropdown"])
+        wait_for_element_and_click(browser, XPATH_SELECTORS["date_range_dropdown"])
 
     def set_categories(self, browser: Selenium):
         categories = self.VARIABLES.get("categories", [])
 
         if categories:
-            wait_for_element_and_click(browser, XPATHS["categories_button"])
+            wait_for_element_and_click(browser, XPATH_SELECTORS["categories_button"])
 
             validate_categories(browser, categories)
 
             for category in categories:
                 wait_for_element_and_click(
-                    browser, XPATHS["categories_select"].format(category=category)
+                    browser,
+                    XPATH_SELECTORS["categories_select"].format(category=category),
                 )
 
     def set_search_filters(
@@ -136,14 +139,15 @@ class NewYorkTimesExtractor(BaseSeleniumExtractor):
     ):
         self.set_categories(browser)
         self.set_date_range(browser, date_to, date_since)
-        browser.select_from_list_by_value(XPATHS["search_page_sort"], "newest")
+        browser.select_from_list_by_value(XPATH_SELECTORS["search_page_sort"], "newest")
 
     def follow_search_page(self, browser: Selenium):
-        wait_for_element_and_click(browser, XPATHS["news_search_button"])
+        wait_for_element_and_click(browser, XPATH_SELECTORS["news_search_button"])
         browser.input_text(
-            XPATHS["news_search_input"], self.VARIABLES.get("search_phrase", "")
+            XPATH_SELECTORS["news_search_input"],
+            self.VARIABLES.get("search_phrase", ""),
         )
-        wait_for_element_and_click(browser, XPATHS["news_search_submit"])
+        wait_for_element_and_click(browser, XPATH_SELECTORS["news_search_submit"])
 
     def follow_main_page(self, browser: Selenium):
         browser.go_to(BASE_URL)

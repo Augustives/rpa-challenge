@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from RPA.Browser.Selenium import Selenium
 
-from spiders.new_york_times.constants import XPATHS
+from spiders.new_york_times.constants import XPATH_SELECTORS
 from utils.selenium import wait_for_element_and_click
 
 
@@ -47,6 +47,6 @@ def parse_date(date_str):
 
 def check_and_close_tracker(browser: Selenium):
     try:
-        wait_for_element_and_click(browser, XPATHS["tracker_button"])
+        wait_for_element_and_click(browser, XPATH_SELECTORS["tracker_button"])
     except Exception:
         pass

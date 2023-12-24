@@ -2,7 +2,7 @@ import re
 
 from RPA.Browser.Selenium import Selenium
 
-from spiders.new_york_times.constants import XPATHS
+from spiders.new_york_times.constants import XPATH_SELECTORS
 from utils.selenium import wait_for_element_and_retrieve
 
 
@@ -12,7 +12,7 @@ def validate_categories(
 ):
     categories_span_elements = wait_for_element_and_retrieve(
         browser,
-        XPATHS["categories_spans"],
+        XPATH_SELECTORS["categories_spans"],
         multiple=True,
     )
 

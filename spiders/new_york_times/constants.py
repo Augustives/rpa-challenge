@@ -16,5 +16,6 @@ XPATHS = {
     "news_date": 'xpath://ol[@data-testid="search-results"]/li/div/span[@data-testid="todays-date"]',
     "news_title": 'xpath://ol[@data-testid="search-results"]/li/div/div/div/a/h4',
     "news_description": 'xpath://ol[@data-testid="search-results"]/li/div/div/div/a/p',
+    "news_image": '//ol[@data-testid="search-results"]/li/div/div/figure/div[@data-testid="photoviewer-children-Image"]/img',
     "tracker_button": 'xpath://button[@data-testid="expanded-dock-btn-selector"]',
 }

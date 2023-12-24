@@ -4,7 +4,10 @@ from selenium.webdriver.remote.webelement import WebElement
 
 class SeleniumBrowser:
     def __init__(self, selenium_settings: dict = {}, browser_settings: dict = {}):
-        self._selenium_settings: dict = {"timeout": 5} | selenium_settings
+        self._selenium_settings: dict = {
+            "timeout": 5,
+            "implicit_wait": 10,
+        } | selenium_settings
 
         self._browser: Selenium = None
         self._browser_settings: dict = {

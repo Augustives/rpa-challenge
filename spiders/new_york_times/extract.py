@@ -27,7 +27,7 @@ class NewYorkTimesExtractor(BaseSeleniumExtractor):
         requests = HTTP()
         for news in data:
             file_name = f"{news.title}-image.jpg"
-            requests.download(news.image_src, f"./output/images/{file_name}")
+            requests.download(news.image_src, f"./output/{file_name}")
             news.image_file_name = file_name
 
     def expand_news_and_wait(self, browser: Selenium):

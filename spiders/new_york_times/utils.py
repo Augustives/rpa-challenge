@@ -7,6 +7,9 @@ from utils.selenium import wait_for_element_and_click
 
 
 def get_date_range(months_ago: int) -> tuple[datetime, datetime]:
+    """
+    Calculates a date range extending back a specified number of months from today.
+    """
     months_ago = max(1, int(months_ago))
 
     today = datetime.now().date()
@@ -22,7 +25,24 @@ def get_date_range(months_ago: int) -> tuple[datetime, datetime]:
     return today, date_since
 
 
-def parse_date(date_str):
+def treat_date_str_edge_cases(date_str: str) -> datetime:
+    """
+    Treats some edge cases that happen in the date strings
+    that are retrieved from the website.
+    """
+    if "Sept." in date_str:
+        date_str = date_str.replace("Sept.", "Sep.")
+
+    return date_str
+
+
+def parse_date(date_str: str) -> datetime:
+    """
+    Receives a date string from the website and transforms it in
+    a datetime object, via the know formats.
+    """
+    date_str = treat_date_str_edge_cases(date_str)
+
     # Formats that include the year
     formats_with_year = ["%b. %d, %Y", "%B %d, %Y"]
     for date_format in formats_with_year:

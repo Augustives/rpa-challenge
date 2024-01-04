@@ -66,8 +66,9 @@ class NewYorkTimesExtractor():
 
         news_containers = wait_for_element_and_retrieve(
             self._browser,
-            XPATH_SELECTORS["search_page_results"]
-        ).find_elements(By.CLASS_NAME, CLASS_SELECTORS['news_containers'])
+            f'class:{CLASS_SELECTORS["news_containers"]}',
+            multiple=True
+        )
 
         news_data = []
         for container in news_containers:

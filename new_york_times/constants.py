@@ -12,7 +12,6 @@ XPATH_SELECTORS = {
     "search_page_submit": '//button[@data-testid="search-page-submit"]',
     "search_page_sort": '//select[@data-testid="SearchForm-sortBy"]',
     "search_page_more_button": '//button[@data-testid="search-show-more-button"]',
-    "search_page_results": '//ol[@data-testid="search-results"]',
     "tracker_button": '//button[@data-testid="expanded-dock-btn-selector"]',
 }
 

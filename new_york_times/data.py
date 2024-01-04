@@ -29,7 +29,11 @@ class News:
         ]
         pattern = "|".join(monetary_patterns)
 
-        if re.search(pattern, self.title) or re.search(pattern, self.description):
+        if re.search(
+                pattern,
+                self.title) or re.search(
+                pattern,
+                self.description):
             return True
 
         return False

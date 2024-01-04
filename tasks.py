@@ -1,8 +1,8 @@
 from robocorp.tasks import task
 
-from spiders.new_york_times import new_york_times_spider
+from new_york_times.spider import NewYorkTimesSpider
 
 
 @task
 def new_york_times_task():
-    new_york_times_spider.crawl()
+    NewYorkTimesSpider().crawl()

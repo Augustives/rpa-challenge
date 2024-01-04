@@ -1,14 +1,16 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
+from dateutil.relativedelta import relativedelta
 from RPA.Browser.Selenium import Selenium
 
-from spiders.new_york_times.constants import XPATH_SELECTORS
+from new_york_times.constants import XPATH_SELECTORS
 from utils.selenium import wait_for_element_and_click
 
 
 def get_date_range(months_ago: int) -> tuple[datetime, datetime]:
     """
-    Calculates a date range extending back a specified number of months from today.
+    Calculates a date range extending back a specified number
+    of months from today.
     """
     months_ago = max(1, int(months_ago))
 
@@ -17,10 +19,7 @@ def get_date_range(months_ago: int) -> tuple[datetime, datetime]:
     if months_ago == 1:
         date_since = today.replace(day=1)
     else:
-        days_to_subtract = (months_ago - 1) * 30 + 1
-        date_since = (today.replace(day=1) - timedelta(days=days_to_subtract)).replace(
-            day=1
-        )
+        date_since = today.replace(day=1) - relativedelta(months=months_ago)
 
     return today, date_since
 
@@ -62,7 +61,8 @@ def parse_date(date_str: str) -> datetime:
         except ValueError:
             continue
 
-    raise ValueError(f"Date format for '{date_str}' is not currently supported.")
+    raise ValueError(
+        f"Date format for '{date_str}' is not currently supported.")
 
 
 def check_and_close_tracker(browser: Selenium):

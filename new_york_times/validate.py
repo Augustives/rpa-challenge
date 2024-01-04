@@ -2,14 +2,11 @@ import re
 
 from RPA.Browser.Selenium import Selenium
 
-from spiders.new_york_times.constants import XPATH_SELECTORS
+from new_york_times.constants import XPATH_SELECTORS
 from utils.selenium import wait_for_element_and_retrieve
 
 
-def validate_categories(
-    browser: Selenium,
-    categories: list[str],
-):
+def validate_categories(browser: Selenium, categories: list[str]):
     categories_span_elements = wait_for_element_and_retrieve(
         browser,
         XPATH_SELECTORS["categories_spans"],
@@ -27,5 +24,6 @@ def validate_categories(
     for category in categories:
         if category not in available_categories:
             raise ValueError(
-                f"Category '{category}' not found in available options: {available_categories}."
+                f"Category '{category}' not found in available "
+                f"options: {available_categories}."
             )

@@ -1,6 +1,3 @@
-# flake8: noqa
-
-
 BASE_URL = "https://www.nytimes.com/"
 
 XPATH_SELECTORS = {

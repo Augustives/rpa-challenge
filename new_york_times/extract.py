@@ -13,8 +13,7 @@ from new_york_times.utils import (check_and_close_tracker, get_date_range,
                                   parse_date)
 from new_york_times.validate import validate_categories
 from utils.selenium import (wait_for_element_and_click,
-                            wait_for_element_and_retrieve,
-                            wait_for_element_stale)
+                            wait_for_element_and_retrieve)
 from utils.work_items import get_input_work_item
 
 
@@ -24,6 +23,29 @@ class NewYorkTimesExtractor():
 
     def __init__(self, browser: Selenium):
         self._browser = browser
+
+    def _load_news_results(self):
+        current_news_count = len(
+            wait_for_element_and_retrieve(
+                self._browser,
+                f'class:{CLASS_SELECTORS["news_containers"]}',
+                multiple=True
+            )
+        )
+
+        wait_for_element_and_click(
+            self._browser, XPATH_SELECTORS["search_page_more_button"]
+        )
+
+        WebDriverWait(self._browser, 10).until(
+            lambda _: len(
+                wait_for_element_and_retrieve(
+                    self._browser,
+                    f'class:{CLASS_SELECTORS["news_containers"]}',
+                    multiple=True
+                )
+            ) > current_news_count
+        )
 
     def _extract_news_images(self, data: list[News]):
         requests = HTTP()
@@ -40,6 +62,7 @@ class NewYorkTimesExtractor():
 
     def _extract_news_data(self, date_since: datetime) -> list[News]:
         check_and_close_tracker(self._browser)
+        self._load_news_results()
 
         news_containers = wait_for_element_and_retrieve(
             self._browser,
@@ -133,12 +156,6 @@ class NewYorkTimesExtractor():
             )
 
     def _set_search_filters(self, date_to: datetime, date_since: datetime):
-        old_news_results = wait_for_element_and_retrieve(
-            self._browser,
-            f'class:{CLASS_SELECTORS["news_containers"]}',
-            multiple=True
-        )
-
         categories = self.VARIABLES.get("categories", [])
         if categories:
             self._set_categories(categories)
@@ -148,11 +165,6 @@ class NewYorkTimesExtractor():
         )
 
         self._set_date_range(date_to, date_since)
-
-        # Waits for the search results to load after applying the filters
-        WebDriverWait(self._browser, 10).until(
-            wait_for_element_stale(old_news_results)
-        )
 
     def _follow_search_page(self):
         wait_for_element_and_click(
